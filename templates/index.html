@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Soundscapes</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        .logo-container {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .logo {
+            max-width: 20%; /* Reduced by 50% */
+            height: auto;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 20px 0;
+        }
+
+        .button {
+            font-weight: bold;
+            border: none;
+            padding: 30px 60px;
+            margin: 10px;
+            cursor: pointer;
+            font-size: 20px;
+            text-decoration: none;
+            display: inline-block;
+            border-radius: 10px;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        /* Button colors */
+        .button-color-1 { background-color: #003049; color: white; }
+        .button-color-2 { background-color: #D62828; color: white; }
+        .button-color-3 { background-color: #F77F00; color: black; }
+        .button-color-4 { background-color: #FCBF49; color: black; }
+        .button-color-5 { background-color: #EAE2B7; color: black; }
+        .button-color-6 { background-color: #9CB380; color: black; }
+        .button-color-7 { background-color: #1B98E0; color: black; }
+        .button-color-8 { background-color: #2E933C; color: black; }
+
+        .audio-container {
+            width: calc(16.66% - 20px); /* Six columns on larger screens */
+            margin: 10px;
+            display: inline-block;
+            vertical-align: top;
+            text-align: center;
+        }
+
+        audio {
+            width: 100%;
+        }
+
+        .audio-info {
+            font-size: 18px;
+            margin-top: 5px;
+        }
+
+        /* Video background */
+        #video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        /* Adjust layout on mobile */
+        @media (max-width: 768px) {
+		
+			.logo {
+                max-width: 60%; /* Increased size for mobile */
+            }
+		
+            .audio-container {
+                width: calc(50% - 20px); /* Two columns on smaller screens */
+            }
+        }
+    </style>
+	
+    <script>
+        // Randomly shuffle the button colors on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            var buttons = document.querySelectorAll('.button');
+            var buttonColors = ['button-color-1', 'button-color-2', 'button-color-3', 'button-color-4', 'button-color-5', 'button-color-6', 'button-color-7', 'button-color-8'];
+
+            buttons.forEach(function(button) {
+                var randomIndex = Math.floor(Math.random() * buttonColors.length);
+                button.classList.add(buttonColors[randomIndex]);
+            });
+        });
+    </script>
+</head>
+<body>
+    <video id="video-background" autoplay muted loop>
+        <source src="{{ url_for('static', filename='video.mp4') }}" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    
+    <div id="header">
+    <div class="logo-container">
+        <a href="https://ermine.at" target="_blank"> <!-- Add anchor tag for the logo -->
+            <img class="logo" src="{{ url_for('static', filename='logo.png') }}" alt="Logo">
+        </a>
+    </div>
+</div>
+
+    <div id="content">
+        <div id="all-soundscapes">
+            <h2 style="font-size: 25px; font-weight: bold; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">Self-created Soundscapes, of pretty much anything.</h2>
+            <h2 style="font-size: 25px; font-weight: bold; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">Ermine soundscapes are seamless - they can be looped indefinitely, without any cuts.</h2>
+			<h2 style="font-size: 25px; font-weight: bold; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">Can be filtered via buttons below.</h2>
+            <div id="filter-categories">
+            <div class="button-container">
+                {% for soundscape in soundscapes %}
+                    <a class="button" href="/sounds/{{ soundscape }}/">{{ soundscape }}</a>
+                {% endfor %}
+            </div>
+        </div>
+			
+			<div class="button-container">
+                {% for file in files %}
+                    <div class="audio-container">
+                        <audio controls>
+                            <source src="{{ url_for('static', filename='soundscapes/' + file) }}" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <div class="audio-info">
+                            <p>{{ file }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
