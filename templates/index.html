@@ -94,19 +94,48 @@
                 width: calc(50% - 20px); /* Two columns on smaller screens */
             }
         }
+		
+			.calendly-button2 {
+        background-color: #2C2C54;
+        color: white;
+        padding: 20px;
+        font-size: 18px;
+        border-radius: 5px;
+        transition: background-color 0.5s ease;
+        border: none;
+        cursor: pointer;
+        margin-bottom: 10px;
+        margin-top: 20px;
+        margin-right: 20px;
+    }
+
+    .calendly-button2:hover {
+        background-color: #80A4ED;  /* A darker shade when hovered */
+    }
+	
     </style>
 	
     <script>
-        // Randomly shuffle the button colors on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            var buttons = document.querySelectorAll('.button');
-            var buttonColors = ['button-color-1', 'button-color-2', 'button-color-3', 'button-color-4', 'button-color-5', 'button-color-6', 'button-color-7', 'button-color-8'];
+     document.addEventListener('DOMContentLoaded', function() {
+    var buttons = document.querySelectorAll('.button');
+    var buttonColors = ['button-color-1', 'button-color-2', 'button-color-3', 'button-color-4', 'button-color-5', 'button-color-6', 'button-color-7', 'button-color-8'];
+    
+    if (buttons.length > buttonColors.length) {
+        console.error('More buttons than unique button colors available.');
+        return;
+    }
 
-            buttons.forEach(function(button) {
-                var randomIndex = Math.floor(Math.random() * buttonColors.length);
-                button.classList.add(buttonColors[randomIndex]);
-            });
-        });
+    // Shuffle button colors
+    for (var i = buttonColors.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        [buttonColors[i], buttonColors[j]] = [buttonColors[j], buttonColors[i]];
+    }
+
+    buttons.forEach(function(button, index) {
+        button.classList.add(buttonColors[index]);
+    });
+});
+
     </script>
 </head>
 <body>
@@ -117,7 +146,7 @@
     
     <div id="header">
     <div class="logo-container">
-        <a href="https://ermine.at" target="_blank"> <!-- Add anchor tag for the logo -->
+        <a href="https://soundscapes.ermine.at" target="_blank"> <!-- Add anchor tag for the logo -->
             <img class="logo" src="{{ url_for('static', filename='logo.png') }}" alt="Logo">
         </a>
     </div>
@@ -130,15 +159,20 @@
 			<h2 style="font-size: 25px; font-weight: bold; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">Can be filtered via buttons below.</h2>
             <div id="filter-categories">
             <div class="button-container">
+			
                 {% for soundscape in soundscapes %}
                     <a class="button" href="/sounds/{{ soundscape }}/">{{ soundscape }}</a>
                 {% endfor %}
+								<button class="button" onclick="window.location.href='https://radlzentrum.ermine.at'">Zurück zum Menü</button>
+
             </div>
         </div>
 			
 			<div class="button-container">
+			
                 {% for file in files %}
                     <div class="audio-container">
+					
                         <audio controls>
                             <source src="{{ url_for('static', filename='soundscapes/' + file) }}" type="audio/mpeg">
                             Your browser does not support the audio element.
@@ -148,6 +182,7 @@
                         </div>
                     </div>
                 {% endfor %}
+
             </div>
         </div>
     </div>
