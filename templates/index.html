@@ -24,6 +24,9 @@
             max-width: 20%; /* Reduced by 50% */
             height: auto;
         }
+		   .button:hover {
+            transform: scale(1.02); /* Scale up the button */
+        }
 
         .button-container {
             display: flex;
@@ -115,38 +118,29 @@
 	
     </style>
 	
-    <script>
-     document.addEventListener('DOMContentLoaded', function() {
-    var buttons = document.querySelectorAll('.button');
-    var buttonColors = ['button-color-1', 'button-color-2', 'button-color-3', 'button-color-4', 'button-color-5', 'button-color-6', 'button-color-7', 'button-color-8'];
-    
-    if (buttons.length > buttonColors.length) {
-        console.error('More buttons than unique button colors available.');
-        return;
-    }
+ <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var buttons = document.querySelectorAll('.button');
+            var buttonColors = ['button-color-1', 'button-color-2', 'button-color-3', 'button-color-4', 'button-color-5', 'button-color-6', 'button-color-7', 'button-color-8'];
 
-    // Shuffle button colors
-    for (var i = buttonColors.length - 1; i > 0; i--) {
-        var j = Math.floor(Math.random() * (i + 1));
-        [buttonColors[i], buttonColors[j]] = [buttonColors[j], buttonColors[i]];
-    }
+            // Shuffle button colors
+            for (var i = buttonColors.length - 1; i > 0; i--) {
+                var j = Math.floor(Math.random() * (i + 1));
+                [buttonColors[i], buttonColors[j]] = [buttonColors[j], buttonColors[i]];
+            }
 
-    buttons.forEach(function(button, index) {
-        button.classList.add(buttonColors[index]);
-    });
-});
-
+            buttons.forEach(function(button, index) {
+                button.classList.add(buttonColors[index % buttonColors.length]);
+            });
+        });
     </script>
 </head>
 <body>
-    <video id="video-background" autoplay muted loop>
-        <source src="{{ url_for('static', filename='video.mp4') }}" type="video/mp4">
-        Your browser does not support the video tag.
-    </video>
+
     
     <div id="header">
     <div class="logo-container">
-        <a href="https://soundscapes.ermine.at" target="_blank"> <!-- Add anchor tag for the logo -->
+        <a href="https://ermine.at" target="_blank"> <!-- Add anchor tag for the logo -->
             <img class="logo" src="{{ url_for('static', filename='logo.png') }}" alt="Logo">
         </a>
     </div>
@@ -163,7 +157,6 @@
                 {% for soundscape in soundscapes %}
                     <a class="button" href="/sounds/{{ soundscape }}/">{{ soundscape }}</a>
                 {% endfor %}
-								<button class="button" onclick="window.location.href='https://radlzentrum.ermine.at'">Zurück zum Menü</button>
 
             </div>
         </div>
